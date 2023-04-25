@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import org.example.Handler.Error.ApiRequestException;
-import org.example.utils.EndPointConstants;
+import org.example.utils.UrlConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.LinkedHashMap;
 
 @RestController
-@RequestMapping(EndPointConstants.REQUEST_MAPPING)
+@RequestMapping(UrlConstants.REQUEST_MAPPING)
 public class InitialController {
     @GetMapping("/")
     public ResponseEntity<?> test() {

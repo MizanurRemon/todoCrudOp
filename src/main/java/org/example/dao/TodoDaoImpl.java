@@ -55,4 +55,48 @@ public class TodoDaoImpl implements TodoDao {
             throw new ApiRequestException(e.getMessage());
         }
     }
+
+    @Override
+    public List<TodoItem> getTodo() {
+        String query = "SELECT * from " + TableConstants.TBL_TODO+" WHERE status = 'active' ORDER BY id DESC";
+
+        try {
+            return jdbcTemplate.query(query, new RowMapper<TodoItem>() {
+                @Override
+                public TodoItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    TodoItem todoItem = new TodoItem();
+                    todoItem.id = rs.getInt(TableColumnConstants.ID);
+                    todoItem.title = rs.getString(TableColumnConstants.TITLE);
+                    todoItem.status = rs.getString(TableColumnConstants.STATUS);
+                    todoItem.created_at = rs.getString(TableColumnConstants.CREATED_AT);
+                    todoItem.updated_at = rs.getString(TableColumnConstants.UPDATED_AT);
+
+                    return todoItem;
+                }
+            });
+        } catch (Exception e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean updateTodo(EntityTodo entityTodo) {
+
+        String query = "UPDATE " + TableConstants.TBL_TODO + " SET title = ? WHERE id = ?";
+        try {
+            return jdbcTemplate.update(query, entityTodo.getTitle(), entityTodo.getId()) == 1;
+        } catch (Exception e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean deleteTodo(EntityTodo entityTodo) {
+        String query = "UPDATE " + TableConstants.TBL_TODO + " SET status = ? WHERE id = ?";
+        try {
+            return jdbcTemplate.update(query, "delete", entityTodo.getId()) == 1;
+        } catch (Exception e) {
+            throw new ApiRequestException(e.getMessage());
+        }
+    }
 }
